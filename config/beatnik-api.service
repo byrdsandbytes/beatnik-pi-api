@@ -1,0 +1,16 @@
+[Unit]
+Description=Beatnik Provisioning API
+After=network.target
+
+[Service]
+# The install script will set this path
+Environment="PORTAL_UI_PATH=/opt/beatnik-portal/ui"
+# The install script will replace these paths
+ExecStart=/usr/bin/python3 /opt/beatnik-portal/portal-api/beatnik-api.py
+WorkingDirectory=/opt/beatnik-portal/portal-api/
+Restart=always
+# The install script will change this to 'root'
+User=beatnik
+
+[Install]
+WantedBy=multi-user.target

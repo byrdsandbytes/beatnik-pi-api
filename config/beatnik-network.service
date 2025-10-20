@@ -1,0 +1,10 @@
+[Unit]
+Description=Beatnik Network Check
+After=NetworkManager.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/beatnik-network-check.sh
+
+[Install]
+WantedBy=multi-user.target
