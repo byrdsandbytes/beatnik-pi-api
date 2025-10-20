@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 16px;
+  text-align: center;
+}
+
+ion-card {
+  max-width: 400px;
+  width: 100%;
+}
+
+ion-button {
+  margin-top: 20px;
+}
+
+ion-spinner {
+  margin-right: 8px;
+}
+
+.feedback-container {
+  padding: 24px;
+}
+
+.feedback-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.success-text {
+  color: var(--ion-color-success);
+}
+
+.error-text {
+  color: var(--ion-color-danger);
+}

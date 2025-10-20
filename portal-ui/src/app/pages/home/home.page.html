@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Beatnik Setup
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+
+    <!-- Initial State: Welcome and Scan Button -->
+    <ion-card *ngIf="!scanCompleted && !isConnecting">
+      <ion-card-header>
+        <ion-card-title>Connect Your Player</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>To set up your Beatnik player, please scan for available Wi-Fi networks.</p>
+        <ion-button expand="block" (click)="onScan()" [disabled]="isScanning">
+          <ion-spinner *ngIf="isScanning" name="crescent"></ion-spinner>
+          <span *ngIf="!isScanning">Scan for Networks</span>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Form State: After scan is complete -->
+    <ion-card *ngIf="scanCompleted && !isConnecting">
+      <ion-card-header>
+        <ion-card-title>Select Network</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-select label="Network SSID" label-placement="floating" [(ngModel)]="selectedSsid">
+              <ion-select-option *ngFor="let net of networks" [value]="net.ssid">
+                {{ net.ssid }} ({{ net.signal }}%)
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" label="Password" label-placement="floating" [(ngModel)]="password" required></ion-input>
+          </ion-item>
+        </ion-list>
+        <ion-button expand="block" (click)="onConnect()" [disabled]="!selectedSsid || !password">
+          Connect
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+    
+    <!-- Connecting/Feedback State -->
+    <ion-card *ngIf="isConnecting">
+      <ion-card-content class="feedback-container">
+        <ion-spinner *ngIf="!feedbackMessage" name="crescent"></ion-spinner>
+        <p *ngIf="!feedbackMessage">Connecting to {{ selectedSsid }}...</p>
+        
+        <div *ngIf="feedbackMessage">
+          <ion-icon [name]="feedbackSuccess ? 'checkmark-circle-outline' : 'warning-outline'" 
+                    [color]="feedbackSuccess ? 'success' : 'danger'" 
+                    class="feedback-icon"></ion-icon>
+          <p [ngClass]="{'success-text': feedbackSuccess, 'error-text': !feedbackSuccess}">
+            {{ feedbackMessage }}
+          </p>
+          <ion-button *ngIf="!feedbackSuccess" expand="block" (click)="reset()">
+            Try Again
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>
