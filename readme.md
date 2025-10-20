@@ -107,33 +107,34 @@ Open your browser to `http://localhost:5001`. You should see your full Ionic app
 
 ## Deployment to Raspberry Pi
 
-The primary deployment method is via the main `beatnik-pi` installer. However, a script is provided for manual installation or testing on a device.
+These steps will download the provisioning portal and set it up on your Raspberry Pi. The entire process is automated with a setup script.
 
-### Automated Pi Setup (Manual Installation)
+### Automated Installation
 
-The `setup_pi.sh` script automates the deployment process on a target Raspberry Pi. It will:
+Run the following commands on your Raspberry Pi to clone the repository and start the setup process.
 
-1.  Install all required system and Python dependencies.
-2.  Copy the `systemd` and `nodogsplash` configuration files to their correct locations.
-3.  Update the service files with the correct paths.
-4.  Enable the services to start on boot.
-
-To run the script on the Pi (assuming the repo is at `/opt/beatnik-portal`):
 ```bash
-# Make the script executable
-sudo chmod +x /opt/beatnik-portal/setup_pi.sh
+# Clone the repository to the recommended /opt directory
+sudo git clone https://github.com/byrdsandbytes/beatnik-pi-api.git /opt/beatnik-portal
+
+# Navigate into the new directory
+cd /opt/beatnik-portal
+
+# Make the setup script executable
+sudo chmod +x setup_pi.sh
 
 # Run the setup script
-sudo /opt/beatnik-portal/setup_pi.sh
+sudo ./setup_pi.sh
 ```
-After the script finishes, reboot the Pi to apply the changes.
 
-### Manual Deployment Steps
+After the script completes, reboot the Raspberry Pi to apply all changes.
 
-This repository is not intended to be run directly by the end-user. Instead, the `beatnik-pi` installer script (or the automated script above) will perform the following actions:
+### How the Automated Setup Works
 
-1.  Clone this repository to `/opt/beatnik-portal` on the Pi.
-2.  Install the required system dependencies (Python, Flask, Nodogsplash, etc.).
-3.  Copy the configuration files from the `config/` directory to their respective system locations (e.g., `/etc/systemd/system/`).
-4.  Update paths within the service files to point to the correct locations inside `/opt/beatnik-portal/`.
-5.  Enable and start the `systemd` services.
+The `setup_pi.sh` script performs the following actions:
+
+1.  Installs all required system and Python dependencies (e.g., `nodogsplash`, `flask`).
+2.  Copies the `systemd` service file for the portal API.
+3.  Copies the `nodogsplash.conf` file for the captive portal.
+4.  Updates the service files with the correct paths.
+5.  Enables the services to start automatically on boot.
